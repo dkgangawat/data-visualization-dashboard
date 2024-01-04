@@ -19,10 +19,10 @@ const Home = () => {
   useEffect(() => {
     // Fetch data from your API or source
     // For example, using fetch or axios
-    fetch('http://localhost:8080/data')
+    fetch("http://65.2.40.115/data")
       .then((response) => response.json())
       .then((data) => setData(data))
-      .catch((error) => console.error('Error fetching data:', error));
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
   return (
     <div className="flex">
@@ -42,9 +42,11 @@ const Home = () => {
 
       <div className="flex-1   text-black ">
         <NavBar />
-        {
-          data.length > 0 ? <DataVisualization data={data} /> : <div>Loading...</div>
-        }
+        {data.length > 0 ? (
+          <DataVisualization data={data} />
+        ) : (
+          <div>Loading...</div>
+        )}
       </div>
     </div>
   );
