@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 
 // Connect to MongoDB
 mongoose
-  .connect("mongodb://127.0.0.1/Dashboard"
+  .connect(
+    "mongodb+srv://bairwaddeepak:dashboard@dashboard.s1wn50r.mongodb.net/Dashboard"
   )
   .then(() => {
     console.log("Connected to MongoDB");
