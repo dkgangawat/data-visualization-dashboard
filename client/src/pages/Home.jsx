@@ -19,7 +19,7 @@ const Home = () => {
   useEffect(() => {
     // Fetch data from your API or source
     // For example, using fetch or axios
-    fetch("http://65.2.40.115/data")
+    fetch("https://codedeep.live/data")
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.error("Error fetching data:", error));
