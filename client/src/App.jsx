@@ -6,7 +6,7 @@ import SideBar from "./components/common/SideBar";
 import NavBar from "./components/common/NavBar";
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-import Data from "./pages/data";
+import Data from "./pages/Data";
 
 const App = () => {
   const UiInteraction = useSelector((state) => state.UiInteraction);
