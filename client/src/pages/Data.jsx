@@ -199,6 +199,7 @@ const Data = () => {
             <div className=" flex justify-end">
               <button
                 onClick={() => {
+                  if(Object.keys(data.filters).length === 0) return;
                   dispatch(fetchFilteredDataAsync(data.filters));
                   setShowFilters(false);
                   setShowingFilterData(true);

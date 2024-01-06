@@ -8,7 +8,7 @@ const NavBar = () => {
   return (
     <>
       <div className=" sticky top-0 px-4 py-2  backdrop-blur-sm bg-[#ffffffc3] z-40  ">
-        <div className=" w-full  border rounded-md flex justify-between items-center p-2">
+        <div className=" w-full  border rounded-md flex justify-between items-center p-1 md:p-2">
           <div className=" flex items-center">
           <IconButton
             className={"md:hidden"}

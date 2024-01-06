@@ -32,7 +32,7 @@ const getData = async (req, res) => {
 
     const totalPages = Math.ceil(totalCount / limit);
 
-    const data = await Data.find().limit(limit).skip(startIndex)
+    const data = await Data.find().limit(limit).skip(startIndex);
     res.json({
       data,
       totalPages,
@@ -47,7 +47,7 @@ const getData = async (req, res) => {
 const getFilteredData = async (req, res) => {
   try {
     const filters = req.query;
-    console.log(filters)
+    console.log(filters);
     const data = await Data.find(filters);
     res.json(data);
   } catch (error) {
@@ -57,10 +57,23 @@ const getFilteredData = async (req, res) => {
 };
 
 //controller to get unique values for filters
-const getUniqueValues =  async (req, res) => {
+const getUniqueValues = async (req, res) => {
   try {
     const uniqueValues = {};
-    const fields = [ 'end_year', 'intensity', 'sector', 'insight', 'region', 'start_year', 'published', 'country', 'relevance', 'pestle', 'source','topic']
+    const fields = [
+      "end_year",
+      "intensity",
+      "sector",
+      "insight",
+      "region",
+      "start_year",
+      "published",
+      "country",
+      "relevance",
+      "pestle",
+      "source",
+      "topic",
+    ];
 
     for (const field of fields) {
       const distinctValues = await Data.distinct(field);
@@ -70,8 +83,36 @@ const getUniqueValues =  async (req, res) => {
     res.json(uniqueValues);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Internal Server Error");
   }
-}
+};
 
-module.exports = { getFilteredData, insertData, getData,getUniqueValues };
+//controller to get labels and data for intensity bar chart
+const getBarChartData = async (req, res) => {
+  try {
+    const labels = [];
+    const data = [];
+    let totalDocuments = await Data.countDocuments();
+    const intensityValues = await Data.distinct("intensity");
+    for (const intensityValue of intensityValues) {
+      const count = await Data.countDocuments({
+        intensity: intensityValue,
+      });
+      labels.push(intensityValue);
+      data.push(count);
+    }
+    res.json({ labels, data, totalDocuments });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+
+module.exports = {
+  getFilteredData,
+  insertData,
+  getData,
+  getUniqueValues,
+  getBarChartData,
+};
