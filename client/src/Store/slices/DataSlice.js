@@ -9,7 +9,43 @@ export const fetchDataAsync = createAsyncThunk(
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/data`, {
         params: { limit, page },
       });
-      return {data:response.data.data, totalPages:response.data.totalPages, page, limit};
+      return {
+        data: response.data.data,
+        totalPages: response.data.totalPages,
+        page,
+        limit,
+      };
+    } catch (error) {
+      throw new Error("Error fetching data");
+    }
+  }
+);
+
+export const fetchFilteredDataAsync = createAsyncThunk(
+  "data/fetchFilteredData",
+  async (filters) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/data/filter`,
+        {
+          params: filters,
+        }
+      );
+      return {data:response.data, filters};
+    } catch (error) {
+      throw new Error("Error fetching data");
+    }
+  }
+);
+
+export const fetchUniqueValuesAsync = createAsyncThunk(
+  "data/fetchUniqueValues",
+  async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/data/unique`
+      );
+      return response.data;
     } catch (error) {
       throw new Error("Error fetching data");
     }
@@ -26,9 +62,17 @@ const dataSlice = createSlice({
     limit: 10,
     page: 1,
     totalPages: 0,
+    filters: {},
+    uniqueValuesForFilters: {},
   },
   reducers: {
-    // Add other reducers here for filtering, getting unique keys, etc.
+    setFilters: (state, action) => {
+      state.filters = action.payload;
+    },
+    clearFilterKey: (state, action) => {
+      delete state.filters[action.payload];
+    }
+    
   },
   extraReducers: (builder) => {
     builder
@@ -41,10 +85,32 @@ const dataSlice = createSlice({
         state.totalPages = action.payload.totalPages;
         state.page = action.payload.page;
         state.limit = action.payload.limit;
-        
-
       })
       .addCase(fetchDataAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(fetchFilteredDataAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchFilteredDataAsync.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        console.log(action.payload) 
+        state.items = action.payload.data;
+        state.filters = action.payload.filters;
+      })
+      .addCase(fetchFilteredDataAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(fetchUniqueValuesAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchUniqueValuesAsync.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.uniqueValuesForFilters = action.payload;
+      })
+      .addCase(fetchUniqueValuesAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
@@ -52,6 +118,6 @@ const dataSlice = createSlice({
 });
 
 // Actions
-export const {} = dataSlice.actions;
-console.log(dataSlice);
+export const {setFilters} = dataSlice.actions;
+
 export default dataSlice.reducer;

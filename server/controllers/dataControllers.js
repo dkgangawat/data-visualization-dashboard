@@ -32,8 +32,7 @@ const getData = async (req, res) => {
 
     const totalPages = Math.ceil(totalCount / limit);
 
-    const data = await Data.find().limit(limit).skip(startIndex);
-
+    const data = await Data.find().limit(limit).skip(startIndex)
     res.json({
       data,
       totalPages,
@@ -48,6 +47,7 @@ const getData = async (req, res) => {
 const getFilteredData = async (req, res) => {
   try {
     const filters = req.query;
+    console.log(filters)
     const data = await Data.find(filters);
     res.json(data);
   } catch (error) {
@@ -56,4 +56,22 @@ const getFilteredData = async (req, res) => {
   }
 };
 
-module.exports = { getFilteredData, insertData, getData };
+//controller to get unique values for filters
+const getUniqueValues =  async (req, res) => {
+  try {
+    const uniqueValues = {};
+    const fields = [ 'end_year', 'intensity', 'sector', 'insight', 'region', 'start_year', 'published', 'country', 'relevance', 'pestle', 'source','topic']
+
+    for (const field of fields) {
+      const distinctValues = await Data.distinct(field);
+      uniqueValues[field] = distinctValues;
+    }
+
+    res.json(uniqueValues);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
+module.exports = { getFilteredData, insertData, getData,getUniqueValues };

@@ -20,7 +20,7 @@ const App = () => {
     <>
      <div className="flex">
       {(UiInteraction.isSideBarOpen || windowWidth > 768) && (
-        <div className=" flex flex-wrap w-screen md:w-[256px] fixed md:sticky h-screen top-0 z-10 md:z-0  ">
+        <div className=" flex flex-wrap w-screen md:w-[256px] fixed md:sticky h-screen top-0 z-50  ">
           <div className="border h-screen w-[256px]  ">
             <SideBar />
           </div>
