@@ -5,7 +5,8 @@ require("dotenv").config();
 require("./config/db");
 const app = express();
 const PORT = process.env.PORT || 8080;
-
+const morgan = require('morgan')
+app.use(morgan('tiny'))
 app.use(bodyParser.json());
 app.use(cors());
 

@@ -18,14 +18,26 @@ const insertData = async (req, res) => {
   }
 };
 
-// Controller to get all data
+// Controller to get all data with total page number
 const getData = async (req, res) => {
   try {
-    const { page, limit } = req.query;
+    let { page, limit } = req.query;
+
+    page = page ? parseInt(page) : 1;
+    limit = limit ? parseInt(limit) : 10;
+
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
+    const totalCount = await Data.countDocuments();
+
+    const totalPages = Math.ceil(totalCount / limit);
+
     const data = await Data.find().limit(limit).skip(startIndex);
-    res.json(data);
+
+    res.json({
+      data,
+      totalPages,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
