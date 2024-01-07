@@ -6,8 +6,10 @@ const PieChart = ({ data }) => {
   const [selectedSector, setSelectedSector] = useState(null);
   const [labels, setLabels] = useState(data.sectorLabels);
   const [dataValue, setDataValue] = useState(data.sectorData);
+  const [showingTopic, setShowingTopic] = useState(false);
 
   const handleClick = (element) => {
+    if (showingTopic) return;
     if (element[0]) {
       const sectorIndex = element[0].index;
       const selectedSectorLabel = data.sectorLabels[sectorIndex];
@@ -15,6 +17,7 @@ const PieChart = ({ data }) => {
       console.log(data.topicLabels[sectorIndex], data.topicData[sectorIndex]);
       setLabels(data.topicLabels[sectorIndex]);
       setDataValue(data.topicData[sectorIndex]);
+      setShowingTopic(true);
     }
   };
   const chartData = {
@@ -32,15 +35,21 @@ const PieChart = ({ data }) => {
   return (
     <div>
       <div className=" flex items-center">
-      
-        <IconButton
-          onClick={() =>{ setSelectedSector(null); setLabels(data.sectorLabels); setDataValue(data.sectorData)}}
-          className=" inline-block"
-        >
-          <IoIosArrowRoundBack />
-        </IconButton>
+        {showingTopic && (
+          <IconButton
+            onClick={() => {
+              setSelectedSector(null);
+              setLabels(data.sectorLabels);
+              setDataValue(data.sectorData);
+              setShowingTopic(false);
+            }}
+            className=" inline-block"
+          >
+            <IoIosArrowRoundBack />
+          </IconButton>
+        )}
         <span className=" text-sm tracking-wider text-gray-400 py-2">
-          {selectedSector ? " Topic " + selectedSector : "Sector"}
+          {selectedSector ? " Topic " + selectedSector : "Sector, click on the specific sector to view topics"}
         </span>
       </div>
 
@@ -48,13 +57,24 @@ const PieChart = ({ data }) => {
         data={chartData}
         options={{
           onClick: (_, elements) => handleClick(elements),
+          aspectRatio: 2,
+          responsive: true,
           plugins: {
             legend: {
-              display: false,
+              position: "right",
+              labels: {
+                font: {
+                  size: 10,
+                },
+                boxWidth: 10,
+              },
             },
           },
         }}
       />
+      <span className=" text-sm text-gray-400 mt-3 w-full text-center block p-4">
+        {showingTopic ? "Topic" : "Sector"} wise distribution of documents
+      </span>
     </div>
   );
 };
