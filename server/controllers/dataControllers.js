@@ -173,9 +173,6 @@ const getBarChartData = async (req, res) => {
         },
       },
     ]);
-
-  
-
     const countryAndRegion = await Data.aggregate([
       {
         $group: {
@@ -209,6 +206,37 @@ const getBarChartData = async (req, res) => {
       },
     ]);
 
+    const likelihood = await Data.aggregate([
+      {
+        $group: {
+          _id: "$likelihood",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          labels: { $push: "$_id" },
+          data: { $push: "$count" },
+        },
+      },
+    ]);
+    const relevance = await Data.aggregate([
+      {
+        $group: {
+          _id: "$relevance",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          labels: { $push: "$_id" },
+          data: { $push: "$count" },
+        },
+      },
+    ]);
+
     const labels = aggregationResultBar[0].labels;
     const data = aggregationResultBar[0].data;
     const sectorChartData = aggregationResultSector[0];
@@ -224,6 +252,8 @@ const getBarChartData = async (req, res) => {
         endYear: aggregationResultEndYear[0],
       },
       countryAndRegion: countryAndRegion[0],
+      likelihood: likelihood[0],
+      relevance: relevance[0],
     });
   } catch (error) {
     console.error(error);

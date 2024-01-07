@@ -24,6 +24,7 @@ import axios from "axios";
 import PieChart from "../components/DataVisualization/PieChart";
 import LineChart from "../components/DataVisualization/LineChart";
 import PolarChart from "../components/DataVisualization/PolarChart";
+import StackedBar from "../components/DataVisualization/StackedBar";
 
 ChartJs.register(
   CategoryScale,
@@ -91,6 +92,13 @@ const Dashboard = () => {
             </div>
             <div className=" max-h-[500px] flex-1 border p-2 shadow  rounded-md">
               <PolarChart data={barData.countryAndRegion} />
+            </div>
+          </section>
+          <section className="flex flex-wrap md:flex-nowrap p-4 gap-4  justify-between">
+            <div className=" max-h-[500px]  w-full  md:w-1/2 border p-2 shadow rounded-md">
+              <StackedBar data={{likelihood:barData.likelihood,relevance:barData.relevance}} />
+            </div>
+            <div className=" max-h-[500px] flex-1 border p-2 shadow  rounded-md">
             </div>
           </section>
         </>
