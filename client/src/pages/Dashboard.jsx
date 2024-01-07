@@ -8,10 +8,26 @@ import {
   BarController,
   BarElement,
   defaults,
+  DoughnutController,
+  ArcElement,
+  Legend,
+  Title,
+  Tooltip,
 } from "chart.js";
 import axios from "axios";
+import PieChart from "../components/DataVisualization/PieChart";
 
-ChartJs.register(CategoryScale, LinearScale, BarController, BarElement);
+ChartJs.register(
+  CategoryScale,
+  LinearScale,
+  BarController,
+  BarElement,
+  DoughnutController,
+  ArcElement,
+  Legend,
+  Title,
+  Tooltip
+);
 // defaults.maintainAspectRatio = false;
 defaults.responsive = true;
 
@@ -27,6 +43,7 @@ const Dashboard = () => {
     fetchData();
   }, []);
   console.log(barData);
+
   return (
     <>
       {barData ? (
@@ -46,12 +63,12 @@ const Dashboard = () => {
               </div>
             </div>
           </section>
-          <section className=" flex flex-wrap md:flex-nowrap p-4 gap-2  justify-between">
-            <div className=" flex-1 md:w-1/2 border p-2 shadow rounded-md">
+          <section className="flex flex-wrap md:flex-nowrap p-4 gap-2  justify-between">
+            <div className=" max-h-[500px] flex-1 md:w-1/2 border p-2 shadow rounded-md">
               <BarChart labels={barData?.labels} barData={barData?.data} />
             </div>
-            <div className=" flex-1 border p-2 shadow  rounded-md">
-              <BarChart labels={barData?.labels} barData={barData?.data} />
+            <div className=" max-h-[500px] flex-1 border p-2 shadow  rounded-md">
+              <PieChart data={barData.sectorChartData} />
             </div>
           </section>
         </>

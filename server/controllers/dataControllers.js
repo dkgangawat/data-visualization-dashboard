@@ -90,8 +90,9 @@ const getUniqueValues = async (req, res) => {
 //controller to get labels and data for intensity bar chart
 const getBarChartData = async (req, res) => {
   try {
+
     let totalDocuments = await Data.countDocuments();
-    const aggregationResult = await Data.aggregate([
+    const aggregationResultBar = await Data.aggregate([
       {
         $group: {
           _id: "$intensity",
@@ -106,11 +107,47 @@ const getBarChartData = async (req, res) => {
         },
       },
     ]);
+
+    const aggregationResultSector = await Data.aggregate([
+      {
+        $group: {
+          _id: {
+            sector: "$sector",
+            topic: "$topic",
+          },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.sector",
+          topics: {
+            $push: {
+              label: "$_id.topic",
+              data: "$count",
+            },
+          },
+          count: { $sum: "$count" },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          sectorLabels: { $push: "$_id" },
+          sectorData: { $push: "$count" },
+          topicLabels: { $push: "$topics.label" },
+          topicData: { $push: "$topics.data" },
+        },
+      },
+    ]);
     
-    const labels = aggregationResult[0].labels;
-    const data = aggregationResult[0].data;
     
-    res.json({ labels, data, totalDocuments });
+    
+    const labels = aggregationResultBar[0].labels;
+    const data = aggregationResultBar[0].data;
+    const sectorChartData = aggregationResultSector[0];
+    
+    res.json({ labels, data, totalDocuments,aggregationResultBar ,sectorChartData});
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");

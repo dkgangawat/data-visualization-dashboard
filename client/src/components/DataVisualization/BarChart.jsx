@@ -10,7 +10,7 @@ const BarChart = ({ labels, barData}) => {
     labels: labels,
     datasets: [
       {
-        label: "Value",
+        label: "Intensity",
         data: barData,
         backgroundColor: ["rgba(116, 123, 245, 0.7)"],
         borderColor: ["rgba(116, 123, 245, 1)"],
