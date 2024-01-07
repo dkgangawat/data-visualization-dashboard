@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Doughnut, PolarArea } from "react-chartjs-2";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import IconButton from "../IconButton";
-const PieChart = ({ data }) => {
+const PolarChart = ({ data }) => {
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [labels, setLabels] = useState(data.regionLabels);
   const [dataValue, setDataValue] = useState(data.regionData);
@@ -72,7 +72,7 @@ const PieChart = ({ data }) => {
   );
 };
 
-export default PieChart;
+export default PolarChart;
 
 const chartColors = [
   "rgba(255, 99, 132, 0.8)",
