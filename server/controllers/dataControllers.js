@@ -90,17 +90,26 @@ const getUniqueValues = async (req, res) => {
 //controller to get labels and data for intensity bar chart
 const getBarChartData = async (req, res) => {
   try {
-    const labels = [];
-    const data = [];
     let totalDocuments = await Data.countDocuments();
-    const intensityValues = await Data.distinct("intensity");
-    for (const intensityValue of intensityValues) {
-      const count = await Data.countDocuments({
-        intensity: intensityValue,
-      });
-      labels.push(intensityValue);
-      data.push(count);
-    }
+    const aggregationResult = await Data.aggregate([
+      {
+        $group: {
+          _id: "$intensity",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          labels: { $push: "$_id" },
+          data: { $push: "$count" },
+        },
+      },
+    ]);
+    
+    const labels = aggregationResult[0].labels;
+    const data = aggregationResult[0].data;
+    
     res.json({ labels, data, totalDocuments });
   } catch (error) {
     console.error(error);
