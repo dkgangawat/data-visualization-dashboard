@@ -7,13 +7,13 @@ const {
   getFilteredData,
   insertData,
   getUniqueValues,
-  getBarChartData
+  getDashboardData
 } = require("../controllers/dataControllers");
 
 router.get("/", getData);
 router.get("/filter", getFilteredData);
 router.post("/insert", insertData);
 router.get("/unique", getUniqueValues);
-router.get("/bar", getBarChartData);
+router.get("/dashboard", getDashboardData);
 
-module.exports = router;
+module.exports = router;getDashboardData

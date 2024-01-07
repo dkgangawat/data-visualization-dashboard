@@ -87,11 +87,11 @@ const getUniqueValues = async (req, res) => {
   }
 };
 
-//controller to get labels and data for intensity bar chart
-const getBarChartData = async (req, res) => {
+//controller to get data for dashboard charts
+const getDashboardData = async (req, res) => {
   try {
     let totalDocuments = await Data.countDocuments();
-    const aggregationResultBar = await Data.aggregate([
+    const aggregationResultIntensity = await Data.aggregate([
       {
         $group: {
           _id: "$intensity",
@@ -140,7 +140,7 @@ const getBarChartData = async (req, res) => {
       },
     ]);
 
-    //aggregaeresultStartYear
+    //aggregateResultStartYear
     const aggregationResultStartYear = await Data.aggregate([
       {
         $group: {
@@ -157,7 +157,7 @@ const getBarChartData = async (req, res) => {
       },
     ]);
 
-    //aggregaeresultEndYear
+    //aggregateResultEndYear
     const aggregationResultEndYear = await Data.aggregate([
       {
         $group: {
@@ -237,15 +237,15 @@ const getBarChartData = async (req, res) => {
       },
     ]);
 
-    const labels = aggregationResultBar[0].labels;
-    const data = aggregationResultBar[0].data;
+    const intensity={
+      labels: aggregationResultIntensity[0].labels,
+      data: aggregationResultIntensity[0].data,
+    } 
     const sectorChartData = aggregationResultSector[0];
 
     res.json({
-      labels,
-      data,
+      intensity,
       totalDocuments,
-      aggregationResultBar,
       sectorChartData,
       years: {
         startYear: aggregationResultStartYear[0],
@@ -266,5 +266,5 @@ module.exports = {
   insertData,
   getData,
   getUniqueValues,
-  getBarChartData,
+  getDashboardData,
 };
