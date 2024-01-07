@@ -90,7 +90,6 @@ const getUniqueValues = async (req, res) => {
 //controller to get labels and data for intensity bar chart
 const getBarChartData = async (req, res) => {
   try {
-
     let totalDocuments = await Data.countDocuments();
     const aggregationResultBar = await Data.aggregate([
       {
@@ -140,20 +139,97 @@ const getBarChartData = async (req, res) => {
         },
       },
     ]);
-    
-    
-    
+
+    //aggregaeresultStartYear
+    const aggregationResultStartYear = await Data.aggregate([
+      {
+        $group: {
+          _id: "$start_year",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          labels: { $push: "$_id" },
+          data: { $push: "$count" },
+        },
+      },
+    ]);
+
+    //aggregaeresultEndYear
+    const aggregationResultEndYear = await Data.aggregate([
+      {
+        $group: {
+          _id: "$end_year",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          labels: { $push: "$_id" },
+          data: { $push: "$count" },
+        },
+      },
+    ]);
+
+  
+
+    const countryAndRegion = await Data.aggregate([
+      {
+        $group: {
+          _id: {
+            region: "$region",
+            country: "$country",
+          },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.region",
+          countries: {
+            $push: {
+              label: "$_id.country",
+              data: "$count",
+            },
+          },
+          count: { $sum: "$count" },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          regionLabels: { $push: "$_id" },
+          regionData: { $push: "$count" },
+          countryLabels: { $push: "$countries.label" },
+          countryData: { $push: "$countries.data" },
+        },
+      },
+    ]);
+
     const labels = aggregationResultBar[0].labels;
     const data = aggregationResultBar[0].data;
     const sectorChartData = aggregationResultSector[0];
-    
-    res.json({ labels, data, totalDocuments,aggregationResultBar ,sectorChartData});
+
+    res.json({
+      labels,
+      data,
+      totalDocuments,
+      aggregationResultBar,
+      sectorChartData,
+      years: {
+        startYear: aggregationResultStartYear[0],
+        endYear: aggregationResultEndYear[0],
+      },
+      countryAndRegion: countryAndRegion[0],
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
 };
-
 
 module.exports = {
   getFilteredData,
