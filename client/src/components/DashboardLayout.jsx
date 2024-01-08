@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-import {  redirect, } from "react-router-dom";
+import {  useNavigate, } from "react-router-dom";
 import SideBar from "./common/SideBar";
 import { toggleSideBar } from "../Store/slices/UiSlice";
 import NavBar from "./common/NavBar";
@@ -15,17 +15,17 @@ const DashboardLayout = ({ children }) => {
     setWindowWidth(window.innerWidth);
   });
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   useEffect(() => {
     const token = Cookies.get("token");
     console.log(token);
     if (token) {
-      console.log(!user.loggedIn);
       if (!user.loggedIn) {
         dispatch(setLoggedIn());
-      }
+      } 
     }else{
-      redirect("/login")
+      navigate("/login")
     }
   }, [user]);
   return (
