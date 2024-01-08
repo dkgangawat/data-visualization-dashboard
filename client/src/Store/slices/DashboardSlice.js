@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axiosClient from '../../utility/axiosClient';
 
 
 export const fetchDashboardData = createAsyncThunk('dashboard/fetchData', async () => {
-    const response = await axios(`${import.meta.env.VITE_API_URL}/data/dashboard`);
+    const response = await axiosClient(`${import.meta.env.VITE_API_URL}/data/dashboard`);
     return response.data;
 });
 

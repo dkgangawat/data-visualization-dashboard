@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 
-import axios from "axios";
 
 const BarChart = ({ labels, barData }) => {
   const data = {

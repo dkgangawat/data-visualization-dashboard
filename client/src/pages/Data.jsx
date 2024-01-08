@@ -40,7 +40,7 @@ const Data = () => {
   const [showFilters, setShowFilters] = React.useState(false);
   const [activeDropdown, setActiveDropdown] = React.useState(null);
   useEffect(() => {
-    if (!data.items.length) dispatch(fetchDataAsync({ limit, page }));
+    dispatch(fetchDataAsync({ limit, page }));
   }, [limit, page]);
   const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
   return (

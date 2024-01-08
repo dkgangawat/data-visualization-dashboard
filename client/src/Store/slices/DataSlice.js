@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import axiosClient from "../../utility/axiosClient";
 
 // Async thunk for fetching data
 export const fetchDataAsync = createAsyncThunk(
   "data/fetchData",
   async ({ limit, page }) => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/data`, {
+      const response = await axiosClient.get(`${import.meta.env.VITE_API_URL}/data`, {
         params: { limit, page },
       });
       return {
@@ -25,7 +25,7 @@ export const fetchFilteredDataAsync = createAsyncThunk(
   "data/fetchFilteredData",
   async (filters) => {
     try {
-      const response = await axios.get(
+      const response = await axiosClient.get(
         `${import.meta.env.VITE_API_URL}/data/filter`,
         {
           params: filters,
@@ -42,7 +42,7 @@ export const fetchUniqueValuesAsync = createAsyncThunk(
   "data/fetchUniqueValues",
   async () => {
     try {
-      const response = await axios.get(
+      const response = await axiosClient.get(
         `${import.meta.env.VITE_API_URL}/data/unique`
       );
       return response.data;

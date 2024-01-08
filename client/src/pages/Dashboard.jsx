@@ -19,7 +19,6 @@ import {
   RadarController,
   RadialLinearScale,
 } from "chart.js";
-import axios from "axios";
 import PieChart from "../components/DataVisualization/PieChart";
 import LineChart from "../components/DataVisualization/LineChart";
 import PolarChart from "../components/DataVisualization/PolarChart";
