@@ -9,7 +9,6 @@ const manifestForPlugin = {
     "/android-chrome-192x192.png",
     "apple-touch-icon.png",
   ],
-
   manifest: {
     name: "admin Dashboard",
     short_name: "Dashboard",
@@ -29,9 +28,6 @@ const manifestForPlugin = {
     background_color: "#ffffff",
     display: "standalone",
   },
-  theme_color: "#ffffff",
-  background_color: "#ffffff",
-  display: "standalone",
 };
 
 // https://vitejs.dev/config/
