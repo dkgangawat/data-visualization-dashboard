@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Doughnut, PolarArea } from "react-chartjs-2";
+import {  PolarArea } from "react-chartjs-2";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import IconButton from "../IconButton";
 const PolarChart = ({ data }) => {

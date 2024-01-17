@@ -7,7 +7,7 @@ const LineChart = ({ data }) => {
     new Set([...data.startYear.labels, ...data.endYear.labels])
   ).sort();
 
-  // Create datasets for startYear and endYear
+  
   const datasets = [
     {
       label: "Start Year",

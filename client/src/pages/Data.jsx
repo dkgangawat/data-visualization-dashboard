@@ -141,7 +141,7 @@ const Data = () => {
             </table>
           </div>
         ) : (
-          <div className=" w-[calc(100vw-32px)] md:w-[calc(100vw-288px)] min-h-16 bg-[#ffffffcf] backdrop-blur-sm flex gap-5 p-4 justify-center flex-wrap items-center">
+          <div className=" w-[calc(100vw-32px)] md:w-[calc(100vw-300px)] min-h-16 bg-[#ffffffcf] backdrop-blur-sm flex gap-5 p-4 justify-center flex-wrap items-center">
             <span className=" text-gray-500 text-sm ">No Data Found!</span>
           </div>
         )}

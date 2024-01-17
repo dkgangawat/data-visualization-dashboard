@@ -72,7 +72,10 @@ const Dashboard = () => {
           </section>
           <section className="flex flex-wrap md:flex-nowrap p-4 gap-4  justify-between">
             <div className=" max-h-[500px] flex-1 md:w-1/2 border p-2 shadow rounded-md">
-              <BarChart labels={data.intensity.labels} barData={data.intensity.data} />
+              <BarChart
+                labels={data.intensity.labels}
+                barData={data.intensity.data}
+              />
             </div>
             <div className=" max-h-[500px] flex-1 border p-2 shadow  rounded-md">
               <PieChart data={data.sectorChartData} />
@@ -82,7 +85,7 @@ const Dashboard = () => {
             <div className=" max-h-[500px]  w-full  md:w-2/3 border p-2 shadow rounded-md">
               <LineChart data={data.years} />
             </div>
-            <div className=" max-h-[500px] flex-1 border p-2 shadow  rounded-md">
+            <div className=" md:max-h-[500px] flex-1 border p-2 shadow  rounded-md">
               <PolarChart data={data.countryAndRegion} />
             </div>
           </section>

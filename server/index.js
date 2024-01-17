@@ -17,3 +17,5 @@ app.use("/data", auth, require("./routes/dataRoute"));
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app;

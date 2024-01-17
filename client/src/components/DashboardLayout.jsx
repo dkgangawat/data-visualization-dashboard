@@ -45,7 +45,7 @@ const DashboardLayout = ({ children }) => {
           </div>
         )}
 
-        <div className="flex-1 text-black ">
+        <div className="flex-1 text-black overflow-y-hidden">
           <NavBar />
           {children}
         </div>
